@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000/api/v1/admin",
+    baseURL: "http://localhost:4000/api/v1/admin",
 });
 
 axiosInstance.interceptors.request.use(

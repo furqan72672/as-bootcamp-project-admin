@@ -12,6 +12,8 @@ import {
   Carousel
 } from "react-bootstrap";
 import { useHistory, useLocation } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faChevronCircleLeft, faChevronCircleRight} from "@fortawesome/free-solid-svg-icons"
 
 
 function ManageVenue(){
@@ -47,20 +49,21 @@ function ManageVenue(){
     return (
       <>
         <Container fluid>
-          {venue?<Row style={{height:'50vh'}}>
-            <Carousel style={{width:'100%'}}>
+          {venue?<Row style={{height:'50vh',display:'flex',justifyContent:'center'}}>
+            <Carousel style={{width:'70%'}} nextLabel="" prevLabel="" prevIcon={<FontAwesomeIcon icon={faChevronCircleLeft} style={{fontSize:30}}/>} nextIcon={<FontAwesomeIcon icon={faChevronCircleRight} style={{fontSize:30}}/>}>
               {venue.images.map((image)=>(
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
-                    src={`http://localhost:3000/uploads/images/${image}`}
+                    style={{height:300}}
+                    src={`http://localhost:4000/uploads/images/${image}`}
                     alt="First slide"
                   />
                 </Carousel.Item>
               ))}
             </Carousel>
           </Row>:null}
-          <Row>
+          <Row className="mt-5">
             <Col md="12">
               <Card>
                 <Card.Header>
