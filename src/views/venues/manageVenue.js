@@ -8,7 +8,8 @@ import {
   Form,
   Container,
   Row,
-  Col
+  Col,
+  Carousel
 } from "react-bootstrap";
 import { useHistory, useLocation } from "react-router";
 
@@ -46,6 +47,19 @@ function ManageVenue(){
     return (
       <>
         <Container fluid>
+          {venue?<Row style={{height:'50vh'}}>
+            <Carousel style={{width:'100%'}}>
+              {venue.images.map((image)=>(
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100"
+                    src={`http://localhost:3000/uploads/images/${image}`}
+                    alt="First slide"
+                  />
+                </Carousel.Item>
+              ))}
+            </Carousel>
+          </Row>:null}
           <Row>
             <Col md="12">
               <Card>
