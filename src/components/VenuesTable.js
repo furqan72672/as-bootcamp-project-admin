@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faPencil, faTrash} from '@fortawesome/free-solid-svg-icons'
+import {faPencil, faTrash, faChevronCircleLeft, faChevronCircleRight} from '@fortawesome/free-solid-svg-icons'
 import Service from "../services/venueService";
 
 // react-bootstrap components
@@ -11,6 +11,7 @@ import {
   Row,
   Col,
   Button,
+  Carousel
 } from "react-bootstrap";
 import { useHistory } from "react-router";
 
@@ -57,6 +58,7 @@ function VenuesTable() {
                       <th className="border-0">description</th>
                       <th className="border-0">capacity</th>
                       <th className="border-0">address</th>
+                      <th className="border-0">images</th>
                       <th className="border-0 d-flex align-items-center justify-content-center">Actions</th>
                     </tr>
                   </thead>
@@ -71,6 +73,20 @@ function VenuesTable() {
                           <td>{venue.description}</td>
                           <td>{venue.capacity}</td>
                           <td>{`${venue.address}, ${venue.city}, ${venue.country}`}</td>
+                          <td>{
+                          venue.images?
+                            <Carousel slide={false} style={{width:125}} nextLabel="" prevLabel="" prevIcon={venue.images.length>1?<FontAwesomeIcon icon={faChevronCircleLeft} style={{fontSize:35,fontWeight:'bold'}}/>:null} nextIcon={venue.images.length>1?<FontAwesomeIcon icon={faChevronCircleRight} style={{fontSize:35}}/>:null}>
+                                {venue.images.map((image,index)=>(
+                                  <Carousel.Item key={index} style={{width:125}}>
+                                    <img
+                                      style={{height:80,width:125}}
+                                      src={`http://localhost:4000/uploads/images/${image}`}
+                                      alt="Venue Images Here"
+                                    />
+                                  </Carousel.Item>
+                                ))}
+                              </Carousel>:null}
+                          </td>
                           <td className="text-center">
                             <FontAwesomeIcon icon={faPencil} className='mr-2' style={{color:'green'}} onClick={()=>navToManage(venue)}/>
                             <FontAwesomeIcon icon={faTrash} style={{color:'red'}} onClick={()=>handleDelete(venue._id)}/>

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Service from "../../services/venueService";
+import './manageVenue.css'
 
 // react-bootstrap components
 import {
@@ -9,60 +10,55 @@ import {
   Container,
   Row,
   Col,
-  Carousel
 } from "react-bootstrap";
 import { useHistory, useLocation } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faChevronCircleLeft, faChevronCircleRight} from "@fortawesome/free-solid-svg-icons"
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
 function ManageVenue(){
     const location=useLocation()
     const history=useHistory()
     let venue=null
-    
+    let images=null
+    let [re,setRe]=useState(true)
+
     if(location.state){
       venue=location.state.venue
-      console.log(venue)
+      images=venue.images
+    }
+
+    function handleDeleteImage(img){
+      venue.images.splice(venue.images.indexOf(img),1)
+      setRe(!re)
+      console.log(venue.images)
     }
 
     async function handleSubmit(e){
       e.preventDefault()
-      
-      const payload={
-        name:e.target[0].value,
-        capacity:e.target[1].value,
-        description:e.target[2].value,
-        address:e.target[3].value,
-        city:e.target[4].value,
-        country:e.target[5].value,
-      }
-      if(venue){
-        await Service.edit(venue._id,payload)
-      }
-      else{
-        await Service.create(payload)
-      }
-      history.push('list')
 
+      console.log(e.target)
+      
+      // const payload={
+      //   name:e.target[0].value,
+      //   capacity:e.target[1].value,
+      //   description:e.target[2].value,
+      //   address:e.target[3].value,
+      //   city:e.target[4].value,
+      //   country:e.target[5].value,
+      // }
+      // if(venue){
+      //   await Service.edit(venue._id,payload)
+      // }
+      // else{
+      //   await Service.create(payload)
+      // }
+      // history.push('list')
     }
+
     return (
       <>
         <Container fluid>
-          {venue?<Row style={{height:'50vh',display:'flex',justifyContent:'center'}}>
-            <Carousel style={{width:'70%'}} nextLabel="" prevLabel="" prevIcon={<FontAwesomeIcon icon={faChevronCircleLeft} style={{fontSize:30}}/>} nextIcon={<FontAwesomeIcon icon={faChevronCircleRight} style={{fontSize:30}}/>}>
-              {venue.images.map((image)=>(
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    style={{height:300}}
-                    src={`http://localhost:4000/uploads/images/${image}`}
-                    alt="First slide"
-                  />
-                </Carousel.Item>
-              ))}
-            </Carousel>
-          </Row>:null}
           <Row className="mt-5">
             <Col md="12">
               <Card>
@@ -117,7 +113,6 @@ function ManageVenue(){
                           ></Form.Control>
                         </Form.Group>
                       </Col>
-                     
                     </Row>
                     <Row className="mb-5">
                       <Col className="pr-1" md="6">
@@ -141,14 +136,38 @@ function ManageVenue(){
                         </Form.Group>
                       </Col>
                     </Row>
-                    <Button
-                      className="btn-fill pull-right"
-                      type="submit"
-                      variant="info"
-                    >
-                      {venue?'Update':'Create'} Venue
-                    </Button>
-                    <div className="clearfix"></div>
+                    {venue?<>
+                    <Row className="mb-2">
+                      <Col className="d-flex flex-wrap justify-content-center">
+                          {venue.images.map((image,index)=>(
+                            <div key={index} style={{background:`url('http://localhost:4000/uploads/images/${image}')`}} className="mt-2 mr-2 img-div" >
+                              {venue.images.length>1?<FontAwesomeIcon icon={faTrash} style={{color:'red',position:'absolute',top:5,right:5}} onClick={()=>handleDeleteImage(image)}/>:null}
+                            </div>
+                          ))}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="d-flex justify-content-end">
+                        <input type='file' name="file" disabled={venue.images.length===5} multiple accept="image/png,image/jpg,image/jpeg"/>
+                      </Col>
+                    </Row>
+                    </>:null}
+
+                    <Row>
+                      <Col className="d-flex justify-content-end">
+                        <Button
+                          className="btn-fill"
+                          type="submit"
+                          variant="success"
+                        >
+                          {venue?'Update':'Create'} Venue
+                        </Button>
+                      </Col>
+                    </Row>
+                    
+                    {/* <div className="mt-5 d-flex justify-content-end">
+                      
+                    </div> */}
                   </Form>
                 </Card.Body>
               </Card>
