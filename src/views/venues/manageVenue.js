@@ -20,12 +20,11 @@ function ManageVenue(){
     const location=useLocation()
     const history=useHistory()
     let venue=null
-    let images=null
+    let newImages=[]
     let [re,setRe]=useState(true)
 
     if(location.state){
       venue=location.state.venue
-      images=venue.images
     }
 
     function handleDeleteImage(img){
@@ -34,26 +33,79 @@ function ManageVenue(){
       console.log(venue.images)
     }
 
+    function validateFileInputUpdate(e){
+      let err=false
+      const files=[...e.target.files]
+      if(files.length>(5-venue.images.length)){
+        document.getElementById('img-input').value=''
+        alert(`you can only upload ${5-venue.images.length} images`)
+        return
+      }
+      for(let i=0;i<files.length;i++){
+        console.log(files[i])
+        if(files[i].type!=="image/jpeg"&&files[i].type!=="image/jpg"&&files[i].type!=="image/png"){
+          err=true
+        }
+      }
+      if(err){
+        document.getElementById('img-input').value=''
+        alert(`you can only upload images (.jpg, .jpeg, .png)`)
+        return
+      }
+      newImages.push(...files)
+    }
+
+    function validateFileInputCreate(e){
+      let err=false
+      const files=[...e.target.files]
+      console.log(files)
+      if(files.length>5){
+        document.getElementById('img-input').value=''
+        alert(`you can only upload 5 images`)
+        return
+      }
+      for(let i=0;i<files.length;i++){
+        console.log(files[i])
+        if(files[i].type!=="image/jpeg"&&files[i].type!=="image/jpg"&&files[i].type!=="image/png"){
+          err=true
+        }
+      }
+      if(err){
+        document.getElementById('img-input').value=''
+        alert(`you can only upload images (.jpg, .jpeg, .png)`)
+        return
+      }
+      newImages.push(...files)
+    }
+
     async function handleSubmit(e){
       e.preventDefault()
 
-      console.log(e.target)
-      
-      // const payload={
-      //   name:e.target[0].value,
-      //   capacity:e.target[1].value,
-      //   description:e.target[2].value,
-      //   address:e.target[3].value,
-      //   city:e.target[4].value,
-      //   country:e.target[5].value,
-      // }
-      // if(venue){
-      //   await Service.edit(venue._id,payload)
-      // }
-      // else{
-      //   await Service.create(payload)
-      // }
-      // history.push('list')
+      console.log(newImages)
+
+      let formData = new FormData();
+      formData.append('name',e.target[0].value)
+      formData.append('capacity',e.target[1].value)
+      formData.append('description',e.target[2].value)
+      formData.append('address',e.target[3].value)
+      formData.append('city',e.target[4].value)
+      formData.append('country',e.target[5].value)
+
+      newImages.forEach(img=>{
+        formData.append('images',img)
+      })
+
+      if(venue){
+        venue.images.forEach(img=>{
+          console.log(img)
+          formData.append('oldImages',img)
+        })
+        await Service.edit(venue._id,formData)
+      }
+      else{
+        await Service.create(formData)
+      }
+      history.push('list')
     }
 
     return (
@@ -148,11 +200,14 @@ function ManageVenue(){
                     </Row>
                     <Row>
                       <Col className="d-flex justify-content-end">
-                        <input type='file' name="file" disabled={venue.images.length===5} multiple accept="image/png,image/jpg,image/jpeg"/>
+                        <input id="img-input" type='file' name="file" disabled={venue.images.length===5} multiple accept=".png, .jpg, .jpeg" onChange={validateFileInputUpdate}/>
                       </Col>
                     </Row>
-                    </>:null}
-
+                    </>:<Row>
+                      <Col className="d-flex justify-content-end">
+                        <input id="img-input" type='file' name="file" multiple accept=".png, .jpg, .jpeg" onChange={validateFileInputCreate}/>
+                      </Col>
+                    </Row>}
                     <Row>
                       <Col className="d-flex justify-content-end">
                         <Button
@@ -164,10 +219,6 @@ function ManageVenue(){
                         </Button>
                       </Col>
                     </Row>
-                    
-                    {/* <div className="mt-5 d-flex justify-content-end">
-                      
-                    </div> */}
                   </Form>
                 </Card.Body>
               </Card>
