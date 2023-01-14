@@ -50,6 +50,9 @@ function VenuesTable() {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Body className="table-full-width table-responsive px-0">
+              <div className="d-flex justify-content-end mr-2">
+                  <Button className="btn btn-primary" onClick={navToManage}>+Add New</Button>
+              </div>
                 <Table className="table-hover table-striped">
                   <thead>
                     <tr>
@@ -99,9 +102,6 @@ function VenuesTable() {
                 </Table>
               </Card.Body>
             </Card>
-            <div className="d-flex justify-content-end">
-                <Button className="btn btn-primary" onClick={navToManage}>+Add New</Button>
-            </div>
           </Col>
         </Row>
       </Container>

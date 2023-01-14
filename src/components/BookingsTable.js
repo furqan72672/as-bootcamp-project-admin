@@ -52,7 +52,7 @@ function BookingsTable() {
                           <td>{booking.user.name}</td>
                           <td>{dateFormatter(booking.date)}</td>
                           <td>{booking.time}</td>
-                          <td>{`${booking.venue.address}, ${booking.venue.city}, ${booking.venue.country}`}</td>
+                          <td>{`${booking?.venue?.address}, ${booking?.venue?.city}, ${booking?.venue?.country}`}</td>
                           <td><span style={{backgroundColor: status==='COMPLETED'?'#90EE90':'lightblue', borderRadius:20, padding:6}} >{status}</span></td>
                         </tr>
                       )

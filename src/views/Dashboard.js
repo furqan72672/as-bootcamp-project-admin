@@ -16,7 +16,6 @@ function Dashboard() {
   async function getDashboardData(){
     const res=await Service.getData()
     setData(res.data)
-
   }
 
   useEffect(()=>{

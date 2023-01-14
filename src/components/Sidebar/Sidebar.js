@@ -16,7 +16,7 @@
 
 */
 import React, { Component } from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, Link } from "react-router-dom";
 
 import { Nav } from "react-bootstrap";
 
@@ -36,12 +36,15 @@ function Sidebar({ color, image, routes }) {
         }}
       />
       <div className="sidebar-wrapper">
-        <div className="logo d-flex align-items-center justify-content-center">
-          
-          <a className="simple-text" href="/">
-            Events Bridge
-          </a>
-        </div>
+        <Link className="simple-text" to="/admin/dashboard">
+          <div className="logo d-flex align-items-center justify-content-center">
+            <div style={{height:50,width:50}} className='mr-2'>
+              <img style={{height:50,width:50}} src="http://localhost:4000/uploads/images/logo.png"/>
+            </div>
+            <span className="simple-text">Events Bridge</span>
+          </div>
+        </Link>
+
         <Nav>
           {routes.map((prop, key) => {
             if (!prop.showInSideBar) {

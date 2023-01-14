@@ -58,8 +58,8 @@ function RatingsTable() {
                       return(
                         <tr key={index}>
                           <td>{index+1}</td>
-                          <td>{rating.venue.name}</td>
-                          <td>{rating.user.name}</td>
+                          <td>{rating?.venue?.name}</td>
+                          <td>{rating?.user?.name}</td>
                           <td>
                             <span>{
                             [...Array(rating.stars)].map((i) =><FontAwesomeIcon key={i} icon={faStar} style={{color:'yellow'}}/>)
