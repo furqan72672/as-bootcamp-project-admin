@@ -33,7 +33,7 @@ import ManageOffice from "views/offices/manageOffice";
 
 const dashboardRoutes = [
   {
-    path: "/login",
+    path: "/auth/login",
     name: "Login",
     icon: "nc-icon nc-chart-pie-35",
     component: Login,

@@ -29,7 +29,7 @@ function Admin() {
 
   const token=localStorage.getItem('device_token')
   if(!token){
-    return <Redirect to='/login' />
+    return <Redirect to='/auth/login' />
   }
 
   const [image, setImage] = React.useState(sidebarImage);

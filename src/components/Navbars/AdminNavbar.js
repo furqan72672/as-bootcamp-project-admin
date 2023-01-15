@@ -33,7 +33,7 @@ function Header() {
   function handleLogoutClick(e){
     e.preventDefault()
     localStorage.removeItem('device_token')
-    history.push('/login')
+    history.push('/auth/login')
   }
 
   const location = useLocation();
